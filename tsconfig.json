@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/node24/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "erasableSyntaxOnly": true,
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    }
+  }
+}

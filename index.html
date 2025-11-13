@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solid Chat</title>
+</head>
+
+<body>
+  <h1>WebSocket Chat</h1>
+  <div id="messages"></div>
+  <input type="text" id="messageInput" placeholder="Type your message...">
+  <button id="sendButton">Send</button>
+
+  <script>
+    const messagesDiv = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+
+    const socket = new WebSocket('/api/ws');
+
+    socket.addEventListener('open', function (event) {
+      console.log('Connected to WebSocket server');
+      messagesDiv.innerHTML += '<p><em>Connected to chat.</em></p>';
+    });
+
+    socket.addEventListener('message', function (event) {
+      const socketEvent = JSON.parse(event.data);
+      console.log(socketEvent);
+      messagesDiv.innerHTML += `<p><strong>Message:</strong> <code><pre>${JSON.stringify(socketEvent, null, 2)}</pre></code></p>`;
+      messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll to bottom
+    });
+
+    socket.addEventListener('close', function (event) {
+      console.log('Disconnected from WebSocket server');
+      messagesDiv.innerHTML += '<p><em>Disconnected from chat.</em></p>';
+    });
+
+    socket.addEventListener('error', function (error) {
+      console.error('WebSocket error:', error);
+      messagesDiv.innerHTML += `<p style="color:red;"><em>Error: ${error.message ?? 'Unknown error'}</em></p>`;
+    });
+
+    sendButton.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', function (event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
+      const message = messageInput.value;
+      if (message.trim() !== '') {
+        const socketEvent = {
+          version: '0',
+          id: crypto.randomUUID(),
+          createdOn: new Date().toISOString(),
+          detailType: 'broadcast',
+          detail: {
+            message: message
+          }
+        }
+        socket.send(JSON.stringify(socketEvent));
+        messageInput.value = '';
+      }
+    }
+  </script>
+</body>
+
+</html>
