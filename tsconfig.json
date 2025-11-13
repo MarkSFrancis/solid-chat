@@ -1,8 +1,21 @@
 {
-  "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "target": "ESNext",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
     "erasableSyntaxOnly": true,
+    "types": [
+      "vite/client"
+    ],
+    "baseUrl": ".",
     "paths": {
       "~/*": [
         "./src/*"
