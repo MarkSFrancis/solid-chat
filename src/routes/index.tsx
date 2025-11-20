@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/solid-router';
-import { Chat } from '~/features/chat/chat';
+import { PageContainer } from '~/ui/page-container';
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -7,9 +7,9 @@ export const Route = createFileRoute('/')({
 
 function RouteComponent() {
   return (
-    <div class="p-4">
-      <h1>Hello "/"!</h1>
-      <Chat />
-    </div>
+    <PageContainer class="p-4">
+      Welcome to Solid Chat! Select a chat from the side navigation to get
+      started.
+    </PageContainer>
   );
 }

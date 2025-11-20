@@ -1,3 +1,4 @@
+import { ApiMessage } from 'api-types';
 import {
   createContext,
   onCleanup,
@@ -9,7 +10,7 @@ import { createStore } from 'solid-js/store';
 
 export interface SocketState {
   status: 'connected' | 'disconnected' | 'connecting' | 'error';
-  messages: unknown[];
+  messages: ApiMessage[];
   send: (data: string) => void;
 }
 
@@ -31,7 +32,7 @@ export function SocketProvider(props: ParentProps) {
       } else {
         console.warn('Socket is not connected. Cannot send message.');
       }
-    }
+    },
   });
 
   let activeSocket: ActiveSocket | null = null;
@@ -65,8 +66,8 @@ export function SocketProvider(props: ParentProps) {
       }, 1_000);
     }
     function handleMessage(event: MessageEvent) {
-      const data = JSON.parse(event.data);
-      setSocketState('messages', socketState.messages.length, data);
+      const data = JSON.parse(event.data) as ApiMessage[];
+      setSocketState('messages', (m) => [...m, ...data]);
     }
 
     socket.addEventListener('open', handleOpen);

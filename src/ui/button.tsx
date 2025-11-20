@@ -75,7 +75,7 @@ export function Button<T extends ValidComponent = 'button'>(
           {...buttonProps}
           disabled={options.disabled || options.isLoading}
           class={cn(
-            'flex items-center gap-1.5 rounded-full text-sm disabled:opacity-50 group',
+            'flex items-center justify-center gap-1.5 rounded-full text-sm disabled:opacity-50 group',
             'cursor-pointer disabled:cursor-not-allowed',
             options.variantStyle === 'icon-only' ? 'p-2' : 'px-3 py-2',
             options.variant === 'primary' &&

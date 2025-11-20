@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/solid-query';
 import { createRootRoute, Outlet } from '@tanstack/solid-router';
 import { ErrorBoundary, ParentProps } from 'solid-js';
+import { AuthProvider } from '~/api/auth-provider';
 import { QueryProvider } from '~/api/query-provider';
 import { SocketProvider } from '~/api/socket-provider';
 import { DashboardLayout } from '~/features/layout/dashboard-layout';
@@ -10,13 +11,15 @@ import { RetryButton } from '~/ui/retry-button';
 export const Route = createRootRoute({
   component: () => (
     <QueryProvider>
-      <SocketProvider>
-        <AppErrorBoundary>
-          <DashboardLayout>
-            <Outlet />
-          </DashboardLayout>
-        </AppErrorBoundary>
-      </SocketProvider>
+      <AppErrorBoundary>
+        <AuthProvider>
+          <SocketProvider>
+            <DashboardLayout>
+              <Outlet />
+            </DashboardLayout>
+          </SocketProvider>
+        </AuthProvider>
+      </AppErrorBoundary>
     </QueryProvider>
   ),
 });

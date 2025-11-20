@@ -1,18 +1,22 @@
-import { createLink } from '@tanstack/solid-router';
-import { Component, ComponentProps } from 'solid-js';
+import { Component, ParentProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
+import { cn } from '~/utils/cn';
 
-interface SideNavLinkProps extends ComponentProps<'a'> {
-  icon: Component<{ class?: string }>;
+interface SideNavLinkProps extends ParentProps {
+  isActive: boolean;
+  icon?: Component<{ class?: string }>;
 }
 
-export const SideNavLink = createLink((props: SideNavLinkProps) => {
+export const SideNavLinkContent = (props: SideNavLinkProps) => {
   return (
-    <a {...props}>
-      <div class="p-2 flex gap-2 rounded-md bg-gray-100">
-        <Dynamic component={props.icon} class="stroke-1" />
-        <span class="align-middle">{props.children}</span>
-      </div>
-    </a>
+    <div
+      class={cn(
+        'p-2 flex gap-2 rounded-md',
+        props.isActive ? 'bg-gray-100' : 'hover:bg-gray-50'
+      )}
+    >
+      {props.icon ? <Dynamic component={props.icon} class="stroke-1" /> : null}
+      <span class="align-middle">{props.children}</span>
+    </div>
   );
-});
+};
